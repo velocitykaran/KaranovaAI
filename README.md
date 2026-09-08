@@ -1,9 +1,9 @@
-# VectorDB — Build a Vector Database from Scratch in C++
+# KaranovaAI — AI-Powered Vector Database & RAG
 
-A fully working **Vector Database** built from scratch in C++ with a web UI.  
+KaranovaAI is an AI-powered Vector Database and RAG application built in C++ with a web UI.
 Implements **HNSW**, **KD-Tree**, and **Brute Force** search algorithms side-by-side, plus a **RAG pipeline** powered by a local LLM via Ollama.
 
-> Built as an educational project to show how production vector databases like Pinecone, Weaviate, and Chroma actually work under the hood.
+> KaranovaAI is a modified and extended version of an open-source educational VectorDB project, enhanced with custom branding, UI updates, and development changes.
 
 ---
 
@@ -131,7 +131,7 @@ You should see both models listed.
 Open **PowerShell** and run:
 
 ```powershell
-git clone https://github.com/YOUR_USERNAME/VectorDB.git
+git clone https://github.com/velocitykaran/KaranovaAI.git
 cd VectorDB
 ```
 
@@ -270,7 +270,7 @@ curl -X POST http://localhost:8080/doc/ask `
 ## Project Structure
 
 ```
-VectorDB/
+KaranovaAI/
 ├── main.cpp        ← C++ backend (HNSW, KD-Tree, BruteForce, REST API, RAG)
 ├── httplib.h       ← Single-header HTTP server library (cpp-httplib)
 ├── index.html      ← Frontend (PCA scatter plot, chat UI, benchmark)
