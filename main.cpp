@@ -725,8 +725,14 @@ public:
                 "application/json"
             );
 
-            if (!res || res->status != 200)
-                return {};
+           if (!res || res->status != 200) {
+    std::cerr << "Ollama embed status: "
+              << (res ? res->status : 0)
+              << " body: "
+              << (res ? res->body : "NO RESPONSE")
+              << std::endl;
+    return {};
+}
 
             return parseEmbedding(res->body);
 #else
