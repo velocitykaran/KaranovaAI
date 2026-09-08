@@ -15,6 +15,7 @@
 #include <functional>
 #include <fstream>
 #include <climits>
+#include <cstdlib>
 
 static const int DIMS = 16;   // demo vectors
 // Doc embeddings dimension is determined at runtime from Ollama's model output
@@ -561,8 +562,10 @@ std::vector<std::string> chunkText(const std::string& text,
 class OllamaClient {
     std::string host;
     int         port;
+    std::string apiKey;
+    bool        cloudEnabled = false;
 
-    // Escape a string for embedding inside a JSON string literal
+    // Escape a string for embedding inside a JSON string literal.
     std::string esc(const std::string& s) {
         std::string o;
         for (char c : s) {
@@ -576,63 +579,251 @@ class OllamaClient {
         return o;
     }
 
-    // Parse {"embedding":[...]} from Ollama /api/embeddings response
+    // Supports both:
+    //   /api/embed      -> {"embeddings":[[...]]}
+    //   /api/embeddings -> {"embedding":[...]}
     std::vector<float> parseEmbedding(const std::string& body) {
-        size_t p = body.find("\"embedding\"");
+        size_t p = body.find("\"embeddings\"");
+        if (p != std::string::npos) {
+            p = body.find('[', p);
+            if (p == std::string::npos) return {};
+
+            p = body.find('[', p + 1);
+            if (p == std::string::npos) return {};
+
+            size_t e = p + 1;
+            int depth = 1;
+
+            while (e < body.size() && depth > 0) {
+                if (body[e] == '[') depth++;
+                else if (body[e] == ']') depth--;
+                e++;
+            }
+
+            if (depth != 0 || e <= p + 1) return {};
+            return parseVec(body.substr(p + 1, e - p - 2));
+        }
+
+        p = body.find("\"embedding\"");
         if (p == std::string::npos) return {};
+
         p = body.find('[', p);
         if (p == std::string::npos) return {};
-        // Find matching ]  — embeddings can be large (768+ floats)
-        size_t e = p + 1, depth = 1;
+
+        size_t e = p + 1;
+        int depth = 1;
+
         while (e < body.size() && depth > 0) {
             if (body[e] == '[') depth++;
             else if (body[e] == ']') depth--;
             e++;
         }
+
+        if (depth != 0 || e <= p + 1) return {};
         return parseVec(body.substr(p + 1, e - p - 2));
     }
 
-    // Parse {"response":"..."} from Ollama /api/generate response
+    // Supports /api/generate and /api/chat responses.
     std::string parseResponse(const std::string& body) {
-        return extractStr(body, "response");
+        std::string response = extractStr(body, "response");
+        if (!response.empty()) return response;
+
+        size_t msg = body.find("\"message\"");
+        if (msg != std::string::npos) {
+            std::string tail = body.substr(msg);
+            std::string content = extractStr(tail, "content");
+            if (!content.empty()) return content;
+        }
+
+        return "";
     }
 
 public:
+    // Local Ollama defaults.
+    // When OLLAMA_API_KEY exists, the same client automatically switches
+    // to Ollama's direct Cloud API.
     std::string embedModel = "nomic-embed-text";
     std::string genModel   = "llama3.2";
 
     OllamaClient(const std::string& h = "127.0.0.1", int p = 11434)
-        : host(h), port(p) {}
+        : host(h), port(p) {
+
+        const char* key = std::getenv("OLLAMA_API_KEY");
+
+        if (key && *key) {
+            apiKey = key;
+            cloudEnabled = true;
+
+            // Ollama Cloud API models.
+            embedModel = "embeddinggemma";
+            genModel   = "gpt-oss:120b";
+        }
+    }
 
     bool isAvailable() {
+
+        // =========================
+        // OLLAMA CLOUD
+        // =========================
+        if (cloudEnabled) {
+
+#ifdef CPPHTTPLIB_OPENSSL_SUPPORT
+            httplib::SSLClient cli("ollama.com", 443);
+
+            cli.set_connection_timeout(5, 0);
+            cli.set_read_timeout(15, 0);
+
+            cli.set_default_headers({
+                {"Authorization", "Bearer " + apiKey},
+                {"Accept", "application/json"}
+            });
+
+            auto res = cli.Get("/api/tags");
+
+            return res && res->status == 200;
+#else
+            return false;
+#endif
+        }
+
+        // =========================
+        // LOCAL OLLAMA
+        // =========================
         httplib::Client cli(host, port);
         cli.set_connection_timeout(2, 0);
+
         auto res = cli.Get("/api/tags");
         return res && res->status == 200;
     }
 
-    // Returns empty vector if Ollama is not running or model not found
     std::vector<float> embed(const std::string& text) {
+
+        // =========================
+        // OLLAMA CLOUD
+        // =========================
+        if (cloudEnabled) {
+
+#ifdef CPPHTTPLIB_OPENSSL_SUPPORT
+            httplib::SSLClient cli("ollama.com", 443);
+
+            cli.set_connection_timeout(5, 0);
+            cli.set_read_timeout(60, 0);
+
+            cli.set_default_headers({
+                {"Authorization", "Bearer " + apiKey},
+                {"Accept", "application/json"}
+            });
+
+            std::string body =
+                "{\"model\":" + jS(embedModel) +
+                ",\"input\":" + jS(text) +
+                ",\"truncate\":true}";
+
+            auto res = cli.Post(
+                "/api/embed",
+                body,
+                "application/json"
+            );
+
+            if (!res || res->status != 200)
+                return {};
+
+            return parseEmbedding(res->body);
+#else
+            return {};
+#endif
+        }
+
+        // =========================
+        // LOCAL OLLAMA
+        // =========================
         httplib::Client cli(host, port);
+
         cli.set_connection_timeout(3, 0);
         cli.set_read_timeout(30, 0);
-        std::string body = "{\"model\":\"" + embedModel + "\",\"prompt\":\"" + esc(text) + "\"}";
-        auto res = cli.Post("/api/embeddings", body, "application/json");
-        if (!res || res->status != 200) return {};
+
+        std::string body =
+            "{\"model\":\"" + embedModel +
+            "\",\"prompt\":\"" + esc(text) + "\"}";
+
+        auto res = cli.Post(
+            "/api/embeddings",
+            body,
+            "application/json"
+        );
+
+        if (!res || res->status != 200)
+            return {};
+
         return parseEmbedding(res->body);
     }
 
-    // Returns error string if Ollama is unavailable
     std::string generate(const std::string& prompt) {
+
+        // =========================
+        // OLLAMA CLOUD
+        // =========================
+        if (cloudEnabled) {
+
+#ifdef CPPHTTPLIB_OPENSSL_SUPPORT
+            httplib::SSLClient cli("ollama.com", 443);
+
+            cli.set_connection_timeout(5, 0);
+            cli.set_read_timeout(180, 0);
+
+            cli.set_default_headers({
+                {"Authorization", "Bearer " + apiKey},
+                {"Accept", "application/json"}
+            });
+
+            std::string body =
+                "{\"model\":" + jS(genModel) +
+                ",\"messages\":[{\"role\":\"user\",\"content\":" +
+                jS(prompt) +
+                "}],\"stream\":false}";
+
+            auto res = cli.Post(
+                "/api/chat",
+                body,
+                "application/json"
+            );
+
+            if (!res || res->status != 200)
+                return "ERROR: Ollama Cloud unavailable";
+
+            std::string answer = parseResponse(res->body);
+
+            if (answer.empty())
+                return "ERROR: Ollama Cloud returned an empty response";
+
+            return answer;
+#else
+            return "ERROR: HTTPS support is not enabled";
+#endif
+        }
+
+        // =========================
+        // LOCAL OLLAMA
+        // =========================
         httplib::Client cli(host, port);
+
         cli.set_connection_timeout(3, 0);
-        cli.set_read_timeout(180, 0);   // LLMs can be slow
-        std::string body = "{\"model\":\"" + genModel + "\","
-                           "\"prompt\":\"" + esc(prompt) + "\","
-                           "\"stream\":false}";
-        auto res = cli.Post("/api/generate", body, "application/json");
+        cli.set_read_timeout(180, 0);
+
+        std::string body =
+            "{\"model\":\"" + genModel +
+            "\",\"prompt\":\"" + esc(prompt) +
+            "\",\"stream\":false}";
+
+        auto res = cli.Post(
+            "/api/generate",
+            body,
+            "application/json"
+        );
+
         if (!res || res->status != 200)
             return "ERROR: Ollama unavailable. Run: ollama serve";
+
         return parseResponse(res->body);
     }
 };
