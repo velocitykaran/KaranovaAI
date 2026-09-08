@@ -1084,6 +1084,8 @@ int main() {
             "text/html");
     });
 
-    svr.listen("0.0.0.0", 8080);
+ const char* port_env = std::getenv("PORT");
+int port = port_env ? std::stoi(port_env) : 8080;
+svr.listen("0.0.0.0", port);
     return 0;
 }

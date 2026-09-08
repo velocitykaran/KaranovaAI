@@ -3,7 +3,6 @@
 KaranovaAI is an AI-powered Vector Database and RAG application built in C++ with a web UI.
 Implements **HNSW**, **KD-Tree**, and **Brute Force** search algorithms side-by-side, plus a **RAG pipeline** powered by a local LLM via Ollama.
 
-> KaranovaAI is a modified and extended version of an open-source educational VectorDB project, enhanced with custom branding, UI updates, and development changes.
 
 ---
 
@@ -42,7 +41,7 @@ Ollama (llama3.2)                  ← reads retrieved chunks, generates an answ
 Answer
 ```
 
-**HNSW (Hierarchical Navigable Small World)** is the same algorithm used by Pinecone, Weaviate, Chroma, and Milvus. It builds a multilayer graph where each layer is progressively sparser — searches start at the top layer and zoom in, achieving O(log N) complexity instead of O(N) for brute force.
+**HNSW (Hierarchical Navigable Small World)** is a graph-based approximate nearest-neighbor search algorithm. It builds a multilayer graph where each layer becomes progressively sparser, allowing fast navigation through high-dimensional vector space.
 
 ---
 
@@ -125,23 +124,14 @@ You should see both models listed.
 > **Minimum specs for Ollama:** 8GB RAM recommended. The models will use ~3GB total.
 
 ---
+### Step 4 — Get the Project
 
-### Step 4 — Clone the Repository
-
-Open **PowerShell** and run:
-
-```powershell
-git clone https://github.com/velocitykaran/KaranovaAI.git
-cd VectorDB
-```
-
-*(Replace `YOUR_USERNAME` with the actual GitHub username)*
-
+The project is already available in this repository.
 ---
 
 ### Step 5 — Compile the C++ Server
 
-Inside the `VectorDB` folder, run:
+Inside the KaranovaAI folder, run:
 
 ```powershell
 g++ -std=c++17 -O2 main.cpp -o db -lws2_32
@@ -164,14 +154,14 @@ ollama serve
 ```
 *(If Ollama is already in the system tray, skip this)*
 
-**Terminal 2** — Start the VectorDB server:
+**Terminal 2** — Start the KaranovaAI server:
 ```powershell
 ./db
 ```
 
 You should see:
 ```
-=== VectorDB Engine ===
+=== KaranovaAI Engine Engine ===
 http://localhost:8080
 20 demo vectors | 16 dims | HNSW+KD-Tree+BruteForce
 Ollama: ONLINE
@@ -284,7 +274,7 @@ BruteForce          O(N·d)      Exact, baseline
 KDTree              O(log N)    Exact, axis-aligned partitioning
 HNSW                O(log N)    Approximate, multilayer small-world graph
 
-VectorDB            Unified interface over all 3 (16D demo vectors)
+KaranovaDB            Unified interface over all 3 (16D demo vectors)
 DocumentDB          HNSW-only index for real Ollama embeddings (768D)
 OllamaClient        HTTP client → /api/embeddings + /api/generate
 ```
