@@ -1552,6 +1552,22 @@ int main() {
                         std::istreambuf_iterator<char>()),
             "text/html");
     });
+    // Serve favicon
+svr.Get("/favicon.png", [](const httplib::Request&, httplib::Response& res) {
+    std::ifstream f("favicon.png", std::ios::binary);
+
+    if (!f.is_open()) {
+        res.status = 404;
+        return;
+    }
+
+    std::string data(
+        (std::istreambuf_iterator<char>(f)),
+        std::istreambuf_iterator<char>()
+    );
+
+    res.set_content(data, "image/png");
+});
 
  const char* port_env = std::getenv("PORT");
 int port = port_env ? std::stoi(port_env) : 8080;
