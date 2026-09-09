@@ -694,19 +694,19 @@ input[type="range"]{
   }
 }
 /* =========================================================
-   DOCUMENTS TAB — PRODUCTION UI
+   ASK AI TAB — PRODUCTION UI
    ========================================================= */
 
-#tab-docs{
+#tab-rag{
   padding:20px !important;
   overflow-y:auto !important;
   background:
-    radial-gradient(circle at 80% 0%,rgba(108,99,255,.06),transparent 35%),
+    radial-gradient(circle at 15% 0%,rgba(108,99,255,.06),transparent 35%),
     #091522 !important;
 }
 
 /* Section headings */
-#tab-docs .sec{
+#tab-rag .sec{
   font-size:9px !important;
   font-weight:800 !important;
   letter-spacing:1.6px !important;
@@ -714,163 +714,137 @@ input[type="range"]{
   margin:0 0 9px !important;
 }
 
-/* AI Services card */
-#tab-docs .ollama-status{
-  background:linear-gradient(
-    145deg,
-    rgba(16,31,48,.96),
-    rgba(9,22,35,.96)
-  ) !important;
-  border:1px solid #1d3855 !important;
-  border-radius:14px !important;
-  padding:14px 15px !important;
-  box-shadow:
-    0 10px 30px rgba(0,0,0,.18),
-    inset 0 1px 0 rgba(255,255,255,.025) !important;
-  line-height:1.75 !important;
-}
-
-/* Service status text */
-#tab-docs #ollamaStatus{
-  color:#c9d6e7 !important;
-}
-
-/* Insert document area */
-#tab-docs input[type="text"],
-#tab-docs textarea{
+/* Question area */
+#tab-rag textarea{
+  width:100% !important;
+  min-height:110px !important;
+  box-sizing:border-box !important;
+  padding:13px !important;
   background:#081522 !important;
   border:1px solid #1c3652 !important;
   border-radius:11px !important;
   color:#e7eef8 !important;
+  line-height:1.55 !important;
+  resize:vertical !important;
   transition:
     border-color .2s ease,
     box-shadow .2s ease,
     background .2s ease !important;
 }
 
-#tab-docs input[type="text"]{
-  height:46px !important;
-  padding:0 13px !important;
-}
-
-#tab-docs textarea{
-  min-height:135px !important;
-  padding:13px !important;
-  line-height:1.55 !important;
-  resize:vertical !important;
-}
-
-#tab-docs input[type="text"]::placeholder,
-#tab-docs textarea::placeholder{
+#tab-rag textarea::placeholder{
   color:#60748d !important;
 }
 
-#tab-docs input[type="text"]:focus,
-#tab-docs textarea:focus{
+#tab-rag textarea:focus{
   outline:none !important;
   border-color:#5968ff !important;
   background:#0a1929 !important;
   box-shadow:0 0 0 3px rgba(89,104,255,.10) !important;
 }
 
-/* Embed button */
-#tab-docs #insertDocBtn{
+/* Top-K selector */
+#tab-rag select{
+  height:44px !important;
+  padding:0 12px !important;
+  background:#081522 !important;
+  border:1px solid #1c3652 !important;
+  border-radius:11px !important;
+  color:#dce6f4 !important;
+  font-size:11px !important;
+}
+
+/* Ask AI button */
+#tab-rag #askBtn{
   height:44px !important;
   border-radius:11px !important;
-  border:1px solid rgba(66,220,155,.28) !important;
   font-weight:800 !important;
   letter-spacing:.2px !important;
-  box-shadow:0 8px 22px rgba(16,185,129,.10) !important;
+  box-shadow:0 8px 22px rgba(89,104,255,.12) !important;
   transition:
     transform .18s ease,
     box-shadow .18s ease,
     filter .18s ease !important;
 }
 
-#tab-docs #insertDocBtn:hover{
+#tab-rag #askBtn:hover{
   transform:translateY(-1px) !important;
   filter:brightness(1.05) !important;
-  box-shadow:0 12px 28px rgba(16,185,129,.17) !important;
+  box-shadow:0 12px 28px rgba(89,104,255,.20) !important;
 }
 
-#tab-docs #insertDocBtn:active{
+#tab-rag #askBtn:active{
   transform:translateY(0) !important;
 }
 
-/* Insert status */
-#tab-docs #insertStatus{
-  min-height:18px !important;
-  margin-top:5px !important;
-  font-size:10px !important;
+/* Info text below button */
+#tab-rag > div > div:first-child > div:last-child{
+  margin-top:4px !important;
+  color:#687d96 !important;
+  font-size:9px !important;
   line-height:1.5 !important;
 }
 
-/* Stored documents heading */
-#tab-docs .doc-list{
+/* Conversation area */
+#tab-rag .chat-history{
+  min-height:250px !important;
+  padding:12px !important;
+  background:#081522 !important;
+  border:1px solid #1c3652 !important;
+  border-radius:14px !important;
+  overflow-y:auto !important;
+}
+
+/* Empty conversation state */
+#tab-rag .chat-history > div:only-child{
+  min-height:210px !important;
   display:flex !important;
-  flex-direction:column !important;
-  gap:9px !important;
-}
-
-/* Empty state */
-#tab-docs .doc-list > div:only-child{
-  padding:16px 13px !important;
-  border:1px dashed #1d3855 !important;
-  border-radius:11px !important;
-  background:rgba(8,21,34,.55) !important;
-  color:#657990 !important;
+  align-items:center !important;
+  justify-content:center !important;
   text-align:center !important;
+  color:#62768e !important;
   font-size:10px !important;
+  line-height:1.6 !important;
 }
 
-/* Document cards */
-#tab-docs .card{
+/* Chat messages */
+#tab-rag .chat-msg{
+  margin-bottom:10px !important;
+  padding:11px 12px !important;
+  border:1px solid #1b3550 !important;
+  border-radius:11px !important;
   background:linear-gradient(
     145deg,
     rgba(14,31,48,.96),
     rgba(8,21,34,.96)
   ) !important;
-  border:1px solid #1b3550 !important;
-  border-radius:13px !important;
-  padding:13px 14px !important;
-  box-shadow:
-    0 8px 24px rgba(0,0,0,.16),
-    inset 0 1px 0 rgba(255,255,255,.02) !important;
-  transition:
-    transform .18s ease,
-    border-color .18s ease,
-    box-shadow .18s ease !important;
 }
 
-#tab-docs .card:hover{
-  transform:translateY(-2px) !important;
-  border-color:#304d70 !important;
-  box-shadow:
-    0 14px 30px rgba(0,0,0,.22),
-    0 0 0 1px rgba(89,104,255,.05) !important;
+/* Question / answer labels */
+#tab-rag .chat-label{
+  font-size:8px !important;
+  font-weight:800 !important;
+  letter-spacing:1.2px !important;
+  color:#8297b0 !important;
+  margin-bottom:5px !important;
 }
 
-#tab-docs .card-title{
-  color:#e7eef8 !important;
-  font-size:12px !important;
-  font-weight:700 !important;
+/* Chat text */
+#tab-rag .chat-text{
+  color:#d8e3f1 !important;
+  font-size:11px !important;
+  line-height:1.65 !important;
 }
 
-#tab-docs .card-preview{
-  color:#71859d !important;
-  font-size:10px !important;
-  line-height:1.55 !important;
+/* Thinking state */
+#tab-rag .thinking{
+  color:#7f91a8 !important;
 }
 
-#tab-docs .card-footer{
-  margin-top:9px !important;
-  padding-top:8px !important;
-  border-top:1px solid rgba(255,255,255,.05) !important;
-}
-
-#tab-docs .card-words{
-  color:#657990 !important;
-  font-size:9px !important;
+/* Spinner */
+#tab-rag .spinner{
+  width:13px !important;
+  height:13px !important;
 }
 </style>
 </head>
