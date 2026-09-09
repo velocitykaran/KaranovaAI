@@ -155,6 +155,7 @@ button {
 ::-webkit-scrollbar { width: 3px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
 </style>
 <style>
 /* =========================================================
@@ -692,6 +693,185 @@ input[type="range"]{
     overflow:auto !important;
   }
 }
+/* =========================================================
+   DOCUMENTS TAB — PRODUCTION UI
+   ========================================================= */
+
+#tab-docs{
+  padding:20px !important;
+  overflow-y:auto !important;
+  background:
+    radial-gradient(circle at 80% 0%,rgba(108,99,255,.06),transparent 35%),
+    #091522 !important;
+}
+
+/* Section headings */
+#tab-docs .sec{
+  font-size:9px !important;
+  font-weight:800 !important;
+  letter-spacing:1.6px !important;
+  color:#8fa3bd !important;
+  margin:0 0 9px !important;
+}
+
+/* AI Services card */
+#tab-docs .ollama-status{
+  background:linear-gradient(
+    145deg,
+    rgba(16,31,48,.96),
+    rgba(9,22,35,.96)
+  ) !important;
+  border:1px solid #1d3855 !important;
+  border-radius:14px !important;
+  padding:14px 15px !important;
+  box-shadow:
+    0 10px 30px rgba(0,0,0,.18),
+    inset 0 1px 0 rgba(255,255,255,.025) !important;
+  line-height:1.75 !important;
+}
+
+/* Service status text */
+#tab-docs #ollamaStatus{
+  color:#c9d6e7 !important;
+}
+
+/* Insert document area */
+#tab-docs input[type="text"],
+#tab-docs textarea{
+  background:#081522 !important;
+  border:1px solid #1c3652 !important;
+  border-radius:11px !important;
+  color:#e7eef8 !important;
+  transition:
+    border-color .2s ease,
+    box-shadow .2s ease,
+    background .2s ease !important;
+}
+
+#tab-docs input[type="text"]{
+  height:46px !important;
+  padding:0 13px !important;
+}
+
+#tab-docs textarea{
+  min-height:135px !important;
+  padding:13px !important;
+  line-height:1.55 !important;
+  resize:vertical !important;
+}
+
+#tab-docs input[type="text"]::placeholder,
+#tab-docs textarea::placeholder{
+  color:#60748d !important;
+}
+
+#tab-docs input[type="text"]:focus,
+#tab-docs textarea:focus{
+  outline:none !important;
+  border-color:#5968ff !important;
+  background:#0a1929 !important;
+  box-shadow:0 0 0 3px rgba(89,104,255,.10) !important;
+}
+
+/* Embed button */
+#tab-docs #insertDocBtn{
+  height:44px !important;
+  border-radius:11px !important;
+  border:1px solid rgba(66,220,155,.28) !important;
+  font-weight:800 !important;
+  letter-spacing:.2px !important;
+  box-shadow:0 8px 22px rgba(16,185,129,.10) !important;
+  transition:
+    transform .18s ease,
+    box-shadow .18s ease,
+    filter .18s ease !important;
+}
+
+#tab-docs #insertDocBtn:hover{
+  transform:translateY(-1px) !important;
+  filter:brightness(1.05) !important;
+  box-shadow:0 12px 28px rgba(16,185,129,.17) !important;
+}
+
+#tab-docs #insertDocBtn:active{
+  transform:translateY(0) !important;
+}
+
+/* Insert status */
+#tab-docs #insertStatus{
+  min-height:18px !important;
+  margin-top:5px !important;
+  font-size:10px !important;
+  line-height:1.5 !important;
+}
+
+/* Stored documents heading */
+#tab-docs .doc-list{
+  display:flex !important;
+  flex-direction:column !important;
+  gap:9px !important;
+}
+
+/* Empty state */
+#tab-docs .doc-list > div:only-child{
+  padding:16px 13px !important;
+  border:1px dashed #1d3855 !important;
+  border-radius:11px !important;
+  background:rgba(8,21,34,.55) !important;
+  color:#657990 !important;
+  text-align:center !important;
+  font-size:10px !important;
+}
+
+/* Document cards */
+#tab-docs .card{
+  background:linear-gradient(
+    145deg,
+    rgba(14,31,48,.96),
+    rgba(8,21,34,.96)
+  ) !important;
+  border:1px solid #1b3550 !important;
+  border-radius:13px !important;
+  padding:13px 14px !important;
+  box-shadow:
+    0 8px 24px rgba(0,0,0,.16),
+    inset 0 1px 0 rgba(255,255,255,.02) !important;
+  transition:
+    transform .18s ease,
+    border-color .18s ease,
+    box-shadow .18s ease !important;
+}
+
+#tab-docs .card:hover{
+  transform:translateY(-2px) !important;
+  border-color:#304d70 !important;
+  box-shadow:
+    0 14px 30px rgba(0,0,0,.22),
+    0 0 0 1px rgba(89,104,255,.05) !important;
+}
+
+#tab-docs .card-title{
+  color:#e7eef8 !important;
+  font-size:12px !important;
+  font-weight:700 !important;
+}
+
+#tab-docs .card-preview{
+  color:#71859d !important;
+  font-size:10px !important;
+  line-height:1.55 !important;
+}
+
+#tab-docs .card-footer{
+  margin-top:9px !important;
+  padding-top:8px !important;
+  border-top:1px solid rgba(255,255,255,.05) !important;
+}
+
+#tab-docs .card-words{
+  color:#657990 !important;
+  font-size:9px !important;
+}
 </style>
 </head>
 <body>
@@ -809,14 +989,15 @@ input[type="range"]{
     <!-- TAB: DOCUMENTS -->
     <div class="tab-content" id="tab-docs">
       <div>
-        <div class="sec">Ollama Status</div>
+        <div class="sec">AI SERVICES</div>
         <div class="ollama-status" id="ollamaStatus">Checking…</div>
       </div>
       <div>
         <div class="sec">Insert Document</div>
         <div style="display:flex;flex-direction:column;gap:8px">
           <input type="text" id="docTitle" placeholder="Document title / topic…" />
-          <textarea id="docText" placeholder="Paste your notes, textbook excerpt, lecture content…&#10;&#10;Long text is automatically split into overlapping chunks and each chunk gets its own real embedding via Ollama's nomic-embed-text model."></textarea>
+<textarea id="docText" placeholder="Paste your notes, textbook excerpt, lecture content...
+Long text is automatically split into overlapping chunks. Each chunk is embedded with Hugging Face BAAI/bge-small-en-v1.5."></textarea>
           <button class="btn-g" id="insertDocBtn" onclick="insertDocument()">⚡ EMBED &amp; INSERT</button>
           <div id="insertStatus" style="font-size:11px;color:var(--muted)"></div>
         </div>
