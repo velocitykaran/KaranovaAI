@@ -12,6 +12,7 @@ WORKDIR /app
 COPY main.cpp .
 COPY httplib.h .
 COPY index.html .
+COPY favicon.png .
 
 RUN g++ -std=c++17 -O2 \
     -DCPPHTTPLIB_OPENSSL_SUPPORT \
