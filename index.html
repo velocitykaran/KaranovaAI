@@ -156,6 +156,509 @@ button {
 ::-webkit-scrollbar-track { background: var(--bg); }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 </style>
+<style>
+/* =========================================================
+   KARANOVAAI — PROFESSIONAL UI OVERRIDE
+   ========================================================= */
+
+:root{
+  --bg:#07111f !important;
+  --card:#0b1728 !important;
+  --card2:#0f1d31 !important;
+  --border:#1d3048 !important;
+  --accent:#6d7cff !important;
+  --accent2:#8b5cf6 !important;
+  --green:#39d98a !important;
+  --text:#e8eef7 !important;
+  --muted:#8292a8 !important;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+html,body{
+  background:
+    radial-gradient(circle at 50% -20%,rgba(109,124,255,.13),transparent 38%),
+    var(--bg) !important;
+  color:var(--text) !important;
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif !important;
+}
+
+/* ---------- HEADER ---------- */
+
+header{
+  height:68px !important;
+  min-height:68px !important;
+  padding:0 24px !important;
+  display:flex !important;
+  align-items:center !important;
+  gap:10px !important;
+  background:rgba(7,17,31,.88) !important;
+  border-bottom:1px solid var(--border) !important;
+  backdrop-filter:blur(18px) !important;
+  position:relative !important;
+  z-index:10 !important;
+}
+
+header h1{
+  margin:0 18px 0 0 !important;
+  font-size:20px !important;
+  font-weight:750 !important;
+  letter-spacing:-.5px !important;
+  color:#f5f7fb !important;
+}
+
+header h1::after{
+  content:"AI SEARCH + RAG";
+  display:block;
+  margin-top:3px;
+  font-size:8px;
+  letter-spacing:1.8px;
+  font-weight:600;
+  color:var(--muted);
+}
+
+header .badge:not(#ollamaBadge){
+  display:none !important;
+}
+
+#ollamaBadge{
+  display:inline-flex !important;
+  align-items:center !important;
+  padding:6px 10px !important;
+  border-radius:999px !important;
+  font-size:9px !important;
+  letter-spacing:.8px !important;
+  border:1px solid rgba(57,217,138,.28) !important;
+  background:rgba(57,217,138,.07) !important;
+  color:var(--green) !important;
+}
+
+#ollamaBadge::before{
+  content:"";
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:currentColor;
+  margin-right:6px;
+  box-shadow:0 0 10px currentColor;
+}
+
+#statsLabel{
+  margin-left:auto !important;
+  font-size:10px !important;
+  color:var(--muted) !important;
+}
+
+/* ---------- MAIN LAYOUT ---------- */
+
+.layout{
+  display:grid !important;
+  grid-template-columns:285px minmax(0,1fr) 405px !important;
+  gap:0 !important;
+  height:calc(100vh - 68px) !important;
+  overflow:hidden !important;
+}
+
+.left-panel{
+  width:auto !important;
+  min-width:0 !important;
+  padding:20px 16px !important;
+  gap:20px !important;
+  background:rgba(11,23,40,.92) !important;
+  border-right:1px solid var(--border) !important;
+}
+
+.center-panel{
+  min-width:0 !important;
+  min-height:0 !important;
+  padding:18px !important;
+  background:
+    radial-gradient(circle at 50% 45%,rgba(109,124,255,.055),transparent 48%),
+    var(--bg) !important;
+  overflow:hidden !important;
+}
+
+#scatter{
+  width:100% !important;
+  height:100% !important;
+  border:1px solid var(--border) !important;
+  border-radius:16px !important;
+  background:
+    linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px),
+    rgba(8,19,34,.75) !important;
+  background-size:32px 32px !important;
+}
+
+/* ---------- RIGHT WORKSPACE ---------- */
+
+.right-panel{
+  width:auto !important;
+  min-width:0 !important;
+  background:rgba(11,23,40,.96) !important;
+  border-left:1px solid var(--border) !important;
+}
+
+.tabs{
+  height:58px !important;
+  background:rgba(15,29,49,.8) !important;
+  border-bottom:1px solid var(--border) !important;
+  padding:0 8px !important;
+  gap:4px !important;
+}
+
+.tab{
+  margin:8px 0 !important;
+  padding:10px 8px !important;
+  border:0 !important;
+  border-radius:9px !important;
+  font-size:9px !important;
+  font-weight:700 !important;
+  letter-spacing:1.2px !important;
+  color:var(--muted) !important;
+  transition:.2s ease !important;
+}
+
+.tab:hover{
+  color:#dce5f2 !important;
+  background:rgba(255,255,255,.035) !important;
+}
+
+.tab.on{
+  color:#fff !important;
+  background:rgba(109,124,255,.14) !important;
+  box-shadow:inset 0 0 0 1px rgba(109,124,255,.22) !important;
+  border-bottom:0 !important;
+}
+
+.tab-content{
+  padding:18px !important;
+  gap:20px !important;
+}
+
+/* ---------- SECTION HEADINGS ---------- */
+
+.sec{
+  margin-bottom:8px !important;
+  color:#aebbd0 !important;
+  font-size:9px !important;
+  font-weight:700 !important;
+  letter-spacing:1.15px !important;
+  text-transform:uppercase !important;
+}
+
+/* ---------- INPUTS ---------- */
+
+input,
+select,
+textarea{
+  width:100% !important;
+  background:#081525 !important;
+  color:#e8eef7 !important;
+  border:1px solid #203650 !important;
+  border-radius:9px !important;
+  outline:none !important;
+  transition:.18s ease !important;
+}
+
+input,
+select{
+  height:38px !important;
+  padding:0 11px !important;
+}
+
+textarea{
+  padding:11px !important;
+  resize:vertical !important;
+  min-height:100px !important;
+}
+
+input::placeholder,
+textarea::placeholder{
+  color:#53657c !important;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+  border-color:rgba(109,124,255,.7) !important;
+  box-shadow:0 0 0 3px rgba(109,124,255,.09) !important;
+}
+
+/* ---------- BUTTONS ---------- */
+
+button{
+  border-radius:9px !important;
+  font-family:inherit !important;
+  font-weight:700 !important;
+  letter-spacing:.4px !important;
+  transition:transform .15s ease,box-shadow .15s ease,background .15s ease !important;
+  cursor:pointer !important;
+}
+
+button:hover{
+  transform:translateY(-1px) !important;
+}
+
+.btn-p{
+  min-height:39px !important;
+  background:linear-gradient(135deg,#6878ff,#7657e8) !important;
+  border:1px solid rgba(255,255,255,.08) !important;
+  color:#fff !important;
+  box-shadow:0 8px 22px rgba(89,78,210,.2) !important;
+}
+
+.btn-p:hover{
+  box-shadow:0 10px 28px rgba(89,78,210,.3) !important;
+}
+
+.btn-s{
+  min-height:37px !important;
+  background:#101f34 !important;
+  border:1px solid #263d59 !important;
+  color:#cbd7e7 !important;
+}
+
+.btn-s:hover{
+  background:#152840 !important;
+  border-color:#38516f !important;
+}
+
+.btn-g{
+  min-height:39px !important;
+  background:linear-gradient(135deg,#198f62,#1ca96f) !important;
+  border:1px solid rgba(57,217,138,.25) !important;
+  color:#fff !important;
+  box-shadow:0 8px 22px rgba(24,143,98,.16) !important;
+}
+
+/* ---------- ALGORITHM SWITCHER ---------- */
+
+.algo-row{
+  display:grid !important;
+  grid-template-columns:repeat(3,1fr) !important;
+  gap:5px !important;
+  padding:4px !important;
+  border:1px solid var(--border) !important;
+  border-radius:10px !important;
+  background:#081525 !important;
+}
+
+.algo-btn{
+  padding:8px 4px !important;
+  border-radius:7px !important;
+  font-size:9px !important;
+  font-weight:700 !important;
+  text-align:center !important;
+  color:var(--muted) !important;
+  cursor:pointer !important;
+  transition:.18s ease !important;
+}
+
+.algo-btn:hover{
+  color:#dce5f2 !important;
+}
+
+.algo-btn.on{
+  color:#fff !important;
+  background:linear-gradient(135deg,rgba(109,124,255,.95),rgba(139,92,246,.9)) !important;
+  box-shadow:0 4px 14px rgba(109,124,255,.18) !important;
+}
+
+/* ---------- LEFT PANEL GROUPS ---------- */
+
+.left-panel > div{
+  position:relative !important;
+}
+
+.left-panel > div + div{
+  padding-top:2px !important;
+}
+
+/* ---------- RANGE ---------- */
+
+input[type="range"]{
+  height:4px !important;
+  padding:0 !important;
+  accent-color:var(--accent) !important;
+}
+
+/* ---------- SEARCH RESULTS ---------- */
+
+.results{
+  display:flex !important;
+  flex-direction:column !important;
+  gap:8px !important;
+}
+
+.result{
+  background:#0d1b2d !important;
+  border:1px solid var(--border) !important;
+  border-radius:10px !important;
+  padding:11px !important;
+  transition:.18s ease !important;
+}
+
+.result:hover{
+  border-color:#304a6b !important;
+  transform:translateY(-1px) !important;
+}
+
+/* ---------- METRICS ---------- */
+
+.lat-big{
+  font-size:30px !important;
+  font-weight:750 !important;
+  letter-spacing:-1px !important;
+  color:#f4f7fb !important;
+}
+
+.lat-sub{
+  color:var(--muted) !important;
+  font-size:10px !important;
+}
+
+/* ---------- CARDS ---------- */
+
+.dcard{
+  background:#0d1b2d !important;
+  border:1px solid var(--border) !important;
+  border-radius:11px !important;
+  padding:12px !important;
+  transition:.18s ease !important;
+}
+
+.dcard:hover{
+  border-color:#304a6b !important;
+  transform:translateY(-1px) !important;
+}
+
+.dcard-title{
+  color:#eaf0f8 !important;
+}
+
+.dcard-preview,
+.dcard-words{
+  color:#7e90a7 !important;
+}
+
+/* ---------- OLLAMA STATUS ---------- */
+
+.ollama-status{
+  background:#0d1b2d !important;
+  border:1px solid var(--border) !important;
+  border-radius:11px !important;
+  padding:12px !important;
+}
+
+/* ---------- CHAT ---------- */
+
+.chat-history{
+  gap:10px !important;
+}
+
+.chat-q{
+  background:rgba(109,124,255,.09) !important;
+  border:1px solid rgba(109,124,255,.18) !important;
+  border-radius:11px !important;
+  padding:11px 12px !important;
+}
+
+.chat-a{
+  background:#0d1b2d !important;
+  border:1px solid var(--border) !important;
+  border-radius:11px !important;
+  padding:12px !important;
+}
+
+.chat-a-label{
+  color:var(--green) !important;
+}
+
+.chat-a-text{
+  color:#dce5f2 !important;
+  line-height:1.7 !important;
+}
+
+/* ---------- BENCHMARK / LAYERS ---------- */
+
+.bench,
+.layers{
+  background:#081525 !important;
+  border:1px solid var(--border) !important;
+  border-radius:10px !important;
+  padding:10px !important;
+}
+
+/* ---------- EMBEDDING CANVAS ---------- */
+
+#vecCvs{
+  width:100% !important;
+  border:1px solid var(--border) !important;
+  border-radius:10px !important;
+  background:#081525 !important;
+}
+
+/* ---------- TOOLTIP ---------- */
+
+#tip{
+  background:#101f34 !important;
+  border:1px solid #304967 !important;
+  border-radius:9px !important;
+  box-shadow:0 12px 30px rgba(0,0,0,.35) !important;
+}
+
+/* ---------- SCROLLBAR ---------- */
+
+::-webkit-scrollbar{
+  width:6px !important;
+}
+
+::-webkit-scrollbar-track{
+  background:transparent !important;
+}
+
+::-webkit-scrollbar-thumb{
+  background:#263b55 !important;
+  border-radius:10px !important;
+}
+
+::-webkit-scrollbar-thumb:hover{
+  background:#38516f !important;
+}
+
+/* ---------- RESPONSIVE ---------- */
+
+@media(max-width:1100px){
+  .layout{
+    grid-template-columns:250px minmax(0,1fr) 350px !important;
+  }
+}
+
+@media(max-width:900px){
+  .layout{
+    grid-template-columns:1fr !important;
+    height:auto !important;
+    overflow:visible !important;
+  }
+
+  .left-panel,
+  .right-panel{
+    width:100% !important;
+    border:0 !important;
+  }
+
+  .center-panel{
+    height:420px !important;
+  }
+
+  body{
+    overflow:auto !important;
+  }
+}
+</style>
 </head>
 <body>
 
