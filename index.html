@@ -755,8 +755,21 @@ input[type="range"]{
 }
 
 /* Ask AI button */
+/* Ask AI controls — fit inside panel */
+#tab-rag select{
+  width:100px !important;
+  min-width:100px !important;
+  max-width:100px !important;
+  flex:0 0 100px !important;
+  box-sizing:border-box !important;
+}
+
 #tab-rag #askBtn{
   height:44px !important;
+  min-width:0 !important;
+  width:auto !important;
+  flex:1 1 0 !important;
+  box-sizing:border-box !important;
   border-radius:11px !important;
   font-weight:800 !important;
   letter-spacing:.2px !important;
